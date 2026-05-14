@@ -1,694 +1,1060 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>✈️ Chuyến du lịch công sở!</title>
-<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&family=Pacifico&display=swap" rel="stylesheet">
-<style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { width: 100%; height: 100%; overflow: hidden; }
-body { font-family: 'Quicksand', sans-serif; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bay cùng nhau nhé ✈️</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-#app {
-  position: fixed;
-  inset: 0;
-  overflow: hidden;
-}
+    body {
+      min-height: 100vh;
+      overflow: hidden;
+      font-family: "Comic Sans MS", "Segoe UI", cursive, sans-serif;
+      background: #bdefff;
+      color: #6b3d5c;
+    }
 
-/* ── Screens ── */
-.screen {
-  position: absolute;
-  inset: 0;
-  width: 100%; height: 100%;
-  overflow: hidden;
-  transition: opacity .6s ease, transform .6s ease;
-}
-.screen.hidden { opacity: 0; pointer-events: none; transform: scale(.97); }
-.screen.active  { opacity: 1; pointer-events: all;  transform: scale(1); }
+    button { font-family: inherit; border: none; cursor: pointer; }
 
-/* ════════════ SCREEN 1 ════════════ */
-#s1 {
-  background: linear-gradient(180deg, #87ceeb 0%, #b8e4f9 30%, #d4f4e2 68%, #a8e6bc 100%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+    .screen {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      overflow: hidden;
+    }
 
-.sun {
-  position: absolute;
-  top: 3vmin; right: 5vmin;
-  width: 10vmin; height: 10vmin;
-  border-radius: 50%;
-  background: #fde68a;
-  box-shadow: 0 0 0 2vmin rgba(253,230,138,.4), 0 0 0 4.5vmin rgba(253,230,138,.18);
-  animation: sunPulse 4s ease-in-out infinite alternate;
-  z-index: 2;
-}
-@keyframes sunPulse {
-  from { box-shadow: 0 0 0 1.5vmin rgba(253,230,138,.4), 0 0 0 3vmin rgba(253,230,138,.18); }
-  to   { box-shadow: 0 0 0 3.5vmin rgba(253,230,138,.45), 0 0 0 7vmin rgba(253,230,138,.1); }
-}
+    .screen.active { display: flex; }
 
-.cld { position: absolute; pointer-events: none; z-index: 2; }
-.cld img { width: 100%; display: block; }
-.cld-1 { width: 18vmin; top: 5vmin;  left: 2vmin;  animation: drift 6s ease-in-out infinite alternate; }
-.cld-2 { width: 14vmin; top: 12vmin; right: 18vmin; animation: drift 8s ease-in-out 1s infinite alternate; }
-.cld-3 { width: 11vmin; top: 24vmin; left: 8vmin;   animation: drift 7s ease-in-out .5s infinite alternate; }
-.cld-4 { width: 9vmin;  top: 8vmin;  left: 44%;     animation: drift 9s ease-in-out 2s infinite alternate; }
-@keyframes drift {
-  from { transform: translate(0,0); }
-  to   { transform: translate(2vmin,-1.5vmin); }
-}
+    .sky-bg {
+      background-image:
+        url("data:image/svg+xml,%3Csvg width='160' height='92' viewBox='0 0 160 92' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' opacity='.88'%3E%3Cellipse cx='50' cy='48' rx='34' ry='18'/%3E%3Cellipse cx='76' cy='42' rx='28' ry='22'/%3E%3Cellipse cx='98' cy='50' rx='35' ry='17'/%3E%3Cellipse cx='72' cy='57' rx='55' ry='14'/%3E%3C/g%3E%3C/svg%3E"),
+        linear-gradient(180deg, #bff2ff 0%, #ffe1ef 62%, #fff7c8 100%);
+      background-size: 180px 104px, cover;
+      animation: cloudsMove 24s linear infinite;
+    }
 
-.birds {
-  position: absolute;
-  top: 10vmin; left: 50%;
-  transform: translateX(-50%);
-  display: flex; gap: 1.5vmin;
-  z-index: 3;
-}
-.birds img { width: 4vmin; animation: flap .8s ease-in-out infinite alternate; }
-.birds img:nth-child(2) { animation-delay: .25s; }
-.birds img:nth-child(3) { animation-delay: .5s; width: 3vmin; margin-top: 1vmin; }
-@keyframes flap {
-  from { transform: scaleY(1); }
-  to   { transform: scaleY(.5) translateY(-1vmin); }
-}
+    @keyframes cloudsMove {
+      from { background-position: 0 30px, center; }
+      to { background-position: 520px 30px, center; }
+    }
 
-.hero-plane {
-  position: relative; z-index: 5;
-  margin-top: 20vmin;
-  animation: planeBounce 2.8s ease-in-out infinite alternate;
-}
-.hero-plane img { width: 28vmin; max-width: 180px; filter: drop-shadow(0 2vmin 3vmin rgba(0,0,0,.15)); }
-@keyframes planeBounce {
-  from { transform: translateY(0) rotate(-3deg); }
-  to   { transform: translateY(-3vmin) rotate(3deg); }
-}
+    .intro-card {
+      position: relative;
+      width: min(920px, 94vw);
+      min-height: 560px;
+      border-radius: 36px;
+      padding: 34px;
+      background:
+        url("data:image/svg+xml,%3Csvg width='900' height='540' viewBox='0 0 900 540' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%23fff3fb'/%3E%3Cstop offset='1' stop-color='%23e2fbff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='900' height='540' rx='42' fill='url(%23g)'/%3E%3Cpath d='M0 410 C130 350 180 465 310 410 S520 355 650 410 800 475 900 410 V540 H0Z' fill='%23ffd7ec'/%3E%3Cpath d='M0 455 C140 390 230 495 360 450 S610 390 900 462 V540 H0Z' fill='%23fff1a8' opacity='.8'/%3E%3Ccircle cx='760' cy='95' r='58' fill='%23fff49c'/%3E%3Cpath d='M162 210 q35 -80 72 0 q-35 42 -72 0Z' fill='%23ff8fc7'/%3E%3Cpath d='M680 245 q32 -70 66 0 q-32 38 -66 0Z' fill='%238edcff'/%3E%3C/svg%3E");
+      background-size: cover;
+      box-shadow: 0 24px 60px rgba(255, 133, 184, .35);
+      text-align: center;
+      border: 8px solid rgba(255, 255, 255, .75);
+    }
 
-.under-clouds {
-  position: relative; z-index: 4;
-  display: flex; justify-content: center; gap: 2vmin;
-  margin-top: -3vmin; width: 100%;
-}
-.under-clouds img { animation: drift 5s ease-in-out infinite alternate; }
-.under-clouds img:nth-child(1) { width: 16vmin; }
-.under-clouds img:nth-child(2) { width: 22vmin; animation-delay: .7s; }
-.under-clouds img:nth-child(3) { width: 14vmin; animation-delay: .3s; }
+    .floating-plane {
+      width: 210px;
+      height: 150px;
+      margin: 6px auto 10px;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 260 170' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 92 C95 56 172 38 235 66 C247 72 247 88 235 94 C167 128 96 122 30 104 C20 101 20 97 30 92Z' fill='%23fff' stroke='%23ff8fc7' stroke-width='6'/%3E%3Cpath d='M104 76 L46 30 C38 24 28 33 34 42 L78 96Z' fill='%23ffd1e8' stroke='%23ff8fc7' stroke-width='5'/%3E%3Cpath d='M118 106 L62 150 C54 156 44 147 50 138 L86 98Z' fill='%23c8f6ff' stroke='%2382d8ff' stroke-width='5'/%3E%3Ccircle cx='148' cy='82' r='12' fill='%238ee7ff'/%3E%3Ccircle cx='185' cy='78' r='12' fill='%238ee7ff'/%3E%3Cpath d='M218 68 L244 42 L236 82Z' fill='%23ffe682' stroke='%23ffbf5a' stroke-width='5'/%3E%3C/svg%3E");
+      background-size: contain;
+      background-repeat: no-repeat;
+      animation: floatPlane 2.7s ease-in-out infinite;
+    }
 
-.s1-title {
-  font-family: 'Pacifico', cursive;
-  font-size: clamp(16px, 5vmin, 38px);
-  background: linear-gradient(135deg, #db2777, #7c3aed);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-  text-align: center; line-height: 1.3;
-  padding: 0 4vmin; margin-top: 3vmin;
-  position: relative; z-index: 5;
-}
-.s1-sub {
-  font-size: clamp(10px, 2.8vmin, 17px);
-  color: #6b7280; text-align: center;
-  margin-top: 1.5vmin; padding: 0 6vmin;
-  position: relative; z-index: 5;
-}
+    @keyframes floatPlane {
+      0%, 100% { transform: translateY(0) rotate(-2deg); }
+      50% { transform: translateY(-18px) rotate(3deg); }
+    }
 
-.btn-area {
-  position: relative; z-index: 10;
-  display: flex; flex-direction: column; align-items: center;
-  gap: 2.5vmin; margin-top: 4vmin;
-  width: 100%; padding: 0 8vmin;
-}
-.btn-fly {
-  background: linear-gradient(135deg, #f472b6, #a855f7);
-  color: #fff; border: none; border-radius: 100px;
-  padding: 2vmin 6vmin;
-  font-family: 'Quicksand', sans-serif;
-  font-size: clamp(12px, 3.2vmin, 18px); font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 1.5vmin 5vmin rgba(168,85,247,.4);
-  display: flex; align-items: center; gap: 1.5vmin;
-  transition: transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .3s;
-  white-space: nowrap;
-}
-.btn-fly:hover { transform: scale(1.07); }
-.btn-fly img { width: 4vmin; max-width: 22px; }
+    h1 {
+      font-size: clamp(32px, 6vw, 58px);
+      color: #ff64a8;
+      text-shadow: 3px 3px 0 #fff;
+      margin-bottom: 12px;
+    }
 
-.btn-nope {
-  background: rgba(255,255,255,.85); color: #f472b6;
-  border: 2px solid #f9a8d4; border-radius: 100px;
-  padding: 1.5vmin 5vmin;
-  font-family: 'Quicksand', sans-serif;
-  font-size: clamp(10px, 2.8vmin, 16px); font-weight: 600;
-  cursor: pointer;
-  display: flex; align-items: center; gap: 1.5vmin;
-  transition: transform .4s cubic-bezier(.34,1.56,.64,1), opacity .3s;
-  white-space: nowrap;
-}
-.btn-nope img { width: 3.5vmin; max-width: 18px; }
+    .subtitle {
+      font-size: clamp(17px, 2.6vw, 24px);
+      line-height: 1.5;
+      max-width: 720px;
+      margin: 0 auto 28px;
+      background: rgba(255, 255, 255, .62);
+      padding: 14px 18px;
+      border-radius: 24px;
+    }
 
-.ground {
-  position: absolute; bottom: 0; left: -5%; right: -5%;
-  height: 18vmin;
-  background: linear-gradient(180deg, #86efac, #4ade80);
-  border-radius: 55% 55% 0 0 / 35% 35% 0 0;
-  z-index: 3;
-}
-.flowers {
-  position: absolute; bottom: 15vmin; left: 0; right: 0;
-  display: flex; justify-content: space-around;
-  padding: 0 4vmin; z-index: 4;
-}
-.flowers img {
-  width: clamp(16px, 5vmin, 38px);
-  animation: sway 3s ease-in-out infinite alternate;
-}
-.flowers img:nth-child(even) { animation-direction: alternate-reverse; }
-@keyframes sway {
-  from { transform: rotate(-6deg); }
-  to   { transform: rotate(6deg) translateY(-2px); }
-}
+    .button-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      min-height: 96px;
+    }
 
-/* ════════════ SCREEN 2 ════════════ */
-#s2 {
-  background: linear-gradient(160deg, #fce7f3 0%, #dbeafe 55%, #ede9fe 100%);
-  display: flex; flex-direction: column;
-}
+    .cute-btn, .tiny-btn {
+      border-radius: 999px;
+      color: white;
+      background: linear-gradient(135deg, #ff69ad, #ff9ed0);
+      box-shadow: 0 10px 0 #d94b8b, 0 16px 30px rgba(255, 105, 173, .35);
+      transition: .25s ease;
+      transform-origin: center;
+    }
 
-.bg-clds { position: absolute; inset: 0; pointer-events: none; z-index: 1; overflow: hidden; }
-.bg-clds img {
-  position: absolute; opacity: .2;
-  animation: drift 10s ease-in-out infinite alternate;
-}
+    .cute-btn { padding: 16px 28px; font-size: 20px; }
+    .tiny-btn { padding: 11px 19px; font-size: 16px; box-shadow: 0 6px 0 #cc4f8f; }
+    .cute-btn:hover, .tiny-btn:hover { transform: translateY(-5px) scale(1.04); }
+    .tiny-btn.secondary { background: linear-gradient(135deg, #79d8ff, #97b5ff); box-shadow: 0 6px 0 #4ca6d5; }
 
-.s2-hd {
-  position: relative; z-index: 10; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  gap: 2vmin; padding: 3vmin 4vmin 1.5vmin;
-}
-.s2-hd img { width: 100px; }
-.s2-hd-title {
-  font-family: 'Pacifico', cursive;
-  font-size: clamp(13px, 3.8vmin, 26px);
-  background: linear-gradient(135deg, #db2777, #7c3aed);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-}
+    .no-btn {
+      background: linear-gradient(135deg, #8bdcff, #8fa9ff);
+      box-shadow: 0 10px 0 #5d83d9, 0 16px 30px rgba(100, 160, 255, .26);
+    }
 
-.prog-wrap {
-  position: relative; z-index: 10; flex-shrink: 0;
-  padding: 0 4vmin 1vmin;
-}
-.prog-track { height: 5px; background: rgba(244,114,182,.2); border-radius: 5px; overflow: hidden; }
-.prog-fill { height: 100%; background: linear-gradient(to right,#f9a8d4,#a855f7); border-radius: 5px; width: 0; transition: width .6s ease; }
-.prog-lbl { font-size: clamp(9px, 2.2vmin, 13px); color: #a855f7; text-align: right; margin-top: 3px; font-weight: 700; }
+    .shake { animation: shake .38s ease; }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-8px); }
+      50% { transform: translateX(8px); }
+      75% { transform: translateX(-5px); }
+    }
 
-/* Map zone: flex: 1 — takes all remaining height */
-.map-zone {
-  position: relative; z-index: 8;
-  flex: 1 1 0; min-height: 0;
-  margin: 0 2vmin;
-}
-.map-paths { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+    .map-wrap, .scene-wrap {
+      width: min(1050px, 96vw);
+      height: min(680px, 94vh);
+      position: relative;
+      border-radius: 36px;
+      border: 8px solid rgba(255,255,255,.75);
+      box-shadow: 0 24px 60px rgba(91, 160, 190, .28);
+      overflow: hidden;
+    }
 
-/* Pins: left & top = % of .map-zone — fully responsive */
-.pin {
-  position: absolute;
-  display: flex; flex-direction: column; align-items: center;
-  cursor: pointer; z-index: 15;
-  /* translate -50% horizontally so left:% targets pin center */
-  transform: translate(-50%, 0);
-}
-.pin:hover .pin-img { transform: scale(1.15) translateY(-4px); filter: brightness(1.06); }
+    .flight-lines {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
 
-.pin-img {
-  width: clamp(42px, 11vmin, 74px);
-  height: clamp(42px, 11vmin, 74px);
-  border-radius: 50%; overflow: hidden;
-  border: 3px solid #fff;
-  box-shadow: 0 3px 14px rgba(0,0,0,.18);
-  background: #fce7f3;
-  transition: transform .22s cubic-bezier(.34,1.56,.64,1), border-color .2s, box-shadow .2s;
-}
-.pin-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.pin.visited .pin-img { border-color: #f472b6; box-shadow: 0 0 0 3px rgba(244,114,182,.3); }
+    .flight-lines path {
+      fill: none;
+      stroke: rgba(255,255,255,.95);
+      stroke-width: 10;
+      stroke-linecap: round;
+      stroke-dasharray: 16 16;
+      filter: drop-shadow(0 0 10px rgba(255,255,255,.7));
+      animation: dashMove 12s linear infinite;
+    }
 
-.pin-lbl {
-  font-size: clamp(7px, 2vmin, 11px); font-weight: 700; color: #555;
-  background: rgba(255,255,255,.93); border-radius: 8px;
-  padding: 1px 1.5vmin; margin-top: .8vmin;
-  box-shadow: 0 1px 4px rgba(0,0,0,.1); white-space: nowrap;
-}
-.pin-dot {
-  width: clamp(5px,1.4vmin,8px); height: clamp(5px,1.4vmin,8px);
-  border-radius: 50%; background: #f472b6; margin-top: .5vmin;
-  animation: pdot 1.6s infinite;
-}
-.pin.visited .pin-dot { background: #a855f7; }
-@keyframes pdot {
-  0%,100% { box-shadow: 0 0 0 0 rgba(244,114,182,.7); }
-  60%      { box-shadow: 0 0 0 2vmin rgba(244,114,182,0); }
-}
+    @keyframes dashMove {
+      from { stroke-dashoffset: 0; }
+      to { stroke-dashoffset: -180; }
+    }
 
-.map-plane {
-  position: absolute; z-index: 20; pointer-events: none;
-  transition: left 1.15s cubic-bezier(.4,0,.2,1), top 1.15s cubic-bezier(.4,0,.2,1);
-}
-.map-plane img { width: clamp(100px, 8vmin, 100px); filter: drop-shadow(1px 2px 5px rgba(0,0,0,.2)); }
+    .map-wrap {
+      background-image: url("data:image/svg+xml,%3Csvg width='1100' height='720' viewBox='0 0 1100 720' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3ClinearGradient id='sea' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop stop-color='%23bff5ff'/%3E%3Cstop offset='1' stop-color='%23d7f8ff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='1100' height='720' fill='url(%23sea)'/%3E%3Cpath d='M73 485 C170 335 342 420 395 271 C456 100 664 123 742 256 C820 390 1002 317 1052 501 C961 638 742 636 613 571 C480 504 300 663 73 485Z' fill='%23c9f2b8' stroke='%2384d989' stroke-width='9'/%3E%3Cpath d='M210 511 C276 433 380 453 442 507 C362 584 278 584 210 511Z' fill='%23fff3a8' opacity='.75'/%3E%3Cpath d='M570 252 C652 175 773 217 807 333 C715 386 614 353 570 252Z' fill='%23ffcfdf' opacity='.65'/%3E%3Cpath d='M136 182 C180 137 253 153 272 214 C212 249 157 236 136 182Z' fill='%23ffe492'/%3E%3Cpath d='M904 142 C940 105 1000 118 1015 168 C966 197 921 187 904 142Z' fill='%23ffc8e0'/%3E%3Cpath d='M227 218 C368 168 419 286 552 276 C693 266 737 402 902 377' fill='none' stroke='%23ffffff' stroke-width='9' stroke-dasharray='18 18' opacity='.9'/%3E%3C/svg%3E");
+      background-size: cover;
+    }
 
-.map-hint {
-  flex-shrink: 0; position: relative; z-index: 10;
-  text-align: center; font-size: clamp(9px, 2.4vmin, 14px);
-  color: #a855f7; font-weight: 700; padding: 1.5vmin 4vmin;
-}
+    .map-title, .scene-title {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255,255,255,.82);
+      color: #ff5da5;
+      padding: 12px 24px;
+      border-radius: 999px;
+      font-size: clamp(17px, 3vw, 28px);
+      box-shadow: 0 8px 20px rgba(255, 128, 180, .25);
+      z-index: 8;
+      white-space: nowrap;
+      text-align: center;
+      border: 4px solid #fff;
+    }
 
-/* Detail panel */
-.detail-panel {
-  position: relative; z-index: 30; flex-shrink: 0;
-  margin: 0 3vmin 2.5vmin;
-  background: rgba(255,255,255,.97);
-  border-radius: clamp(12px,4vmin,22px);
-  border: 1.5px solid rgba(244,114,182,.25);
-  box-shadow: 0 8px 32px rgba(0,0,0,.1);
-  overflow: hidden;
-  max-height: 0; opacity: 0;
-  transition: max-height .55s cubic-bezier(.34,1.2,.64,1), opacity .4s;
-}
-.detail-panel.open { max-height: 46vmin; opacity: 1; }
+    .destination {
+      position: absolute;
+      width: 116px;
+      height: 116px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.76);
+      box-shadow: 0 10px 24px rgba(71, 128, 154, .22);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 5px;
+      color: #80506f;
+      font-size: 15px;
+      font-weight: 700;
+      border: 5px solid #fff;
+      animation: bob 2.3s ease-in-out infinite;
+      z-index: 3;
+    }
 
-.dp-body {
-  display: flex; gap: 3vmin; padding: 3vmin; align-items: flex-start;
-  overflow-y: auto; max-height: 46vmin;
-}
-.dp-gif {
-  flex-shrink: 0;
-  width: clamp(64px, 17vmin, 110px);
-  height: clamp(64px, 17vmin, 110px);
-  border-radius: clamp(8px, 2.5vmin, 16px); overflow: hidden;
-  border: 2px solid rgba(244,114,182,.3); background: #fce7f3;
-}
-.dp-gif img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.dp-info { flex: 1; min-width: 0; }
-.dp-flag { font-size: clamp(18px, 5vmin, 30px); margin-bottom: .5vmin; line-height: 1.1; }
-.dp-name { font-family:'Pacifico',cursive; font-size: clamp(12px, 3.2vmin, 20px); color: #db2777; margin-bottom: .5vmin; }
-.dp-greet { font-size: clamp(8px, 2.2vmin, 12px); color: #a855f7; font-weight: 700; margin-bottom: 1.5vmin; }
-.dp-text { font-size: clamp(8px, 2.2vmin, 13px); color: #6b7280; line-height: 1.65; }
+    .destination.locked { opacity: .45; filter: grayscale(.25); }
+    .destination:hover:not(.locked) { transform: scale(1.09); }
+    .destination .icon { width: 54px; height: 54px; background-size: contain; background-repeat: no-repeat; background-position: center; }
 
-.dp-close {
-  position: absolute; top: 2vmin; right: 2.5vmin;
-  width: clamp(22px, 5vmin, 32px); height: clamp(22px, 5vmin, 32px);
-  border-radius: 50%; background: #fce7f3; border: none; cursor: pointer;
-  color: #f472b6; font-size: clamp(10px, 2.8vmin, 16px); font-weight: 700;
-  display: flex; align-items: center; justify-content: center;
-  transition: background .2s, transform .2s;
-}
-.dp-close:hover { background: #f9a8d4; transform: scale(1.12); }
+    @keyframes bob { 0%, 100% { translate: 0 0; } 50% { translate: 0 -10px; } }
 
-/* ════════════ LETTER OVERLAY ════════════ */
-#letter-ov {
-  position: fixed; inset: 0; z-index: 200;
-  display: flex; align-items: center; justify-content: center;
-  background: rgba(139,92,246,.22);
-  backdrop-filter: blur(8px);
-  opacity: 0; pointer-events: none;
-  transition: opacity .5s;
-  padding: 4vmin;
-}
-#letter-ov.show { opacity: 1; pointer-events: all; }
+    .place-1 { left: 11%; top: 28%; }
+    .place-2 { left: 37%; top: 18%; animation-delay: .2s; }
+    .place-3 { left: 62%; top: 36%; animation-delay: .4s; }
+    .place-4 { left: 76%; top: 48%; animation-delay: .6s; }
+    .place-5 { left: 64%; top: 72%; animation-delay: .8s; }
+    .place-6 { left: 40%; top: 58%; animation-delay: 1s; }
+    .place-7 { left: 84%; top: 72%; animation-delay: 1.2s; }
 
-.letter-box {
-  display: flex; flex-direction: column; align-items: center;
-  transform: translateY(-35vh);
-  transition: transform 1.1s cubic-bezier(.2,1.3,.4,1);
-  width: 100%; max-width: min(90vmin, 420px);
-}
-.letter-box.dropped { transform: translateY(0); }
+    .city { background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 90 90' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='16' y='36' width='18' height='34' rx='3' fill='%23ff91c6'/%3E%3Crect x='38' y='20' width='20' height='50' rx='3' fill='%238fe5ff'/%3E%3Crect x='62' y='32' width='15' height='38' rx='3' fill='%23ffd865'/%3E%3Cg fill='%23fff'%3E%3Crect x='22' y='43' width='5' height='5'/%3E%3Crect x='44' y='29' width='5' height='5'/%3E%3Crect x='44' y='42' width='5' height='5'/%3E%3Crect x='67' y='42' width='5' height='5'/%3E%3C/g%3E%3C/svg%3E"); }
+    .beach { background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 90 90' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='66' cy='24' r='12' fill='%23ffe36e'/%3E%3Cpath d='M13 63 C30 49 44 75 62 59 C70 52 76 55 82 60 V76 H13Z' fill='%238ce7ff'/%3E%3Cpath d='M11 69 H82 V78 H11Z' fill='%23ffd99a'/%3E%3Cpath d='M42 61 C43 43 50 32 67 24' stroke='%238b654f' stroke-width='5' fill='none'/%3E%3Cpath d='M58 25 C43 20 36 25 33 36 C45 34 54 31 58 25Z' fill='%237bd57c'/%3E%3Cpath d='M64 22 C58 10 47 8 38 14 C49 20 57 23 64 22Z' fill='%237bd57c'/%3E%3C/svg%3E"); }
+    .mountain { background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 90 90' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8 70 L34 28 L56 70Z' fill='%2396d889'/%3E%3Cpath d='M34 28 L44 44 L28 44Z' fill='%23fff'/%3E%3Cpath d='M36 70 L61 34 L84 70Z' fill='%238bd3ff'/%3E%3Cpath d='M61 34 L70 48 L52 48Z' fill='%23fff'/%3E%3C/svg%3E"); }
+    .heart { background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 90 90' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M45 75 C19 53 12 42 15 29 C18 15 35 12 45 25 C55 12 72 15 75 29 C78 42 71 53 45 75Z' fill='%23ff6eae'/%3E%3Ccircle cx='34' cy='34' r='5' fill='%23fff' opacity='.75'/%3E%3C/svg%3E"); }
 
-.env-wrap { width: clamp(70px, 22vmin, 140px); position: relative; z-index: 2; }
-.env-wrap img { width: 100%; display: block; }
+    .plane-on-map, .landing-plane {
+      position: absolute;
+      width: 118px;
+      height: 76px;
+      z-index: 5;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 160 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M13 55 C54 33 109 20 148 38 C156 42 156 53 148 57 C105 78 56 76 13 64 C5 62 5 58 13 55Z' fill='%23fff' stroke='%23ff75b5' stroke-width='5'/%3E%3Cpath d='M67 47 L28 16 C23 12 17 18 21 24 L51 60Z' fill='%23ffd0e8' stroke='%23ff75b5' stroke-width='4'/%3E%3Cpath d='M75 65 L36 91 C31 95 25 89 29 83 L55 59Z' fill='%23c7f6ff' stroke='%2383dfff' stroke-width='4'/%3E%3Ccircle cx='91' cy='50' r='7' fill='%2388e7ff'/%3E%3Ccircle cx='114' cy='47' r='7' fill='%2388e7ff'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-size: contain;
+    }
 
-.letter-card {
-  width: 100%;
-  background: linear-gradient(145deg, #fff9fb, #fef3ff);
-  border-radius: 0 0 clamp(12px,3.5vmin,22px) clamp(12px,3.5vmin,22px);
-  padding: clamp(12px,4vmin,28px) clamp(12px,4vmin,26px);
-  text-align: center;
-  border: 1.5px solid rgba(244,114,182,.35); border-top: none;
-  box-shadow: 0 4vmin 10vmin rgba(168,85,247,.2);
-}
-.ltr-icon { font-size: clamp(26px,7vmin,48px); margin-bottom: 1.5vmin; }
-.ltr-title {
-  font-family: 'Pacifico', cursive;
-  font-size: clamp(10px, 2.8vmin, 16px);
-  background: linear-gradient(135deg, #db2777, #7c3aed);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-  line-height: 2; margin-bottom: 1.5vmin;
-}
-.ltr-sub { font-size: clamp(8px, 2vmin, 12px); color: #9ca3af; }
-.ltr-hearts {
-  display: block; font-size: clamp(14px,4vmin,26px);
-  letter-spacing: .8vmin; margin-top: 1.5vmin;
-  animation: hb 1.2s ease-in-out infinite alternate;
-}
-@keyframes hb { from { transform: scale(1); } to { transform: scale(1.12); } }
-.ltr-btn {
-  margin-top: 2.5vmin;
-  background: linear-gradient(135deg, #f472b6, #a855f7);
-  color: #fff; border: none; border-radius: 100px;
-  padding: 1.5vmin 5vmin;
-  font-family: 'Quicksand', sans-serif;
-  font-size: clamp(10px, 2.8vmin, 15px); font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 1vmin 3vmin rgba(168,85,247,.35);
-  transition: transform .2s;
-}
-.ltr-btn:hover { transform: scale(1.06); }
+    .plane-on-map { left: 7%; top: 70%; transition: 1s cubic-bezier(.55,.05,.24,1.22); }
+    .scene-wrap { background-size: cover; background-position: center; }
 
-/* Confetti */
-.confetti {
-  position: fixed; pointer-events: none; z-index: 300;
-  border-radius: 2px; opacity: 0;
-  animation: cffall linear forwards;
-}
-@keyframes cffall {
-  0%   { opacity: 1; transform: translateY(0) rotate(0deg); }
-  100% { opacity: 0; transform: translateY(110vh) rotate(540deg); }
-}
-</style>
+    .scene-city { background-image: url("data:image/svg+xml,%3Csvg width='1100' height='720' viewBox='0 0 1100 720' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop stop-color='%23bfefff'/%3E%3Cstop offset='1' stop-color='%23ffe4f3'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='1100' height='720' fill='url(%23g)'/%3E%3Ccircle cx='930' cy='105' r='62' fill='%23fff49a'/%3E%3Cg fill='%23fff' opacity='.9'%3E%3Cellipse cx='190' cy='115' rx='80' ry='28'/%3E%3Cellipse cx='250' cy='98' rx='55' ry='35'/%3E%3Cellipse cx='720' cy='150' rx='90' ry='30'/%3E%3C/g%3E%3Cpath d='M0 560 C180 500 270 595 410 545 S660 485 820 552 1010 610 1100 548 V720 H0Z' fill='%23ffd3e8'/%3E%3Cpath d='M120 365 h95 v230 h-95z' fill='%23ff91c6'/%3E%3Cpath d='M245 300 h120 v295 h-120z' fill='%238ee8ff'/%3E%3Cpath d='M395 385 h96 v210 h-96z' fill='%23ffe07b'/%3E%3Cpath d='M810 330 h130 v265 h-130z' fill='%23c7a8ff'/%3E%3Cg fill='%23fff'%3E%3Crect x='145' y='395' width='18' height='18'/%3E%3Crect x='180' y='395' width='18' height='18'/%3E%3Crect x='278' y='335' width='20' height='20'/%3E%3Crect x='322' y='335' width='20' height='20'/%3E%3Crect x='835' y='365' width='22' height='22'/%3E%3Crect x='882' y='365' width='22' height='22'/%3E%3C/g%3E%3Cpath d='M0 595 H1100 V720 H0Z' fill='%23fff6bd'/%3E%3C/svg%3E"); }
+    .scene-beach { background-image: url("data:image/svg+xml,%3Csvg width='1100' height='720' viewBox='0 0 1100 720' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='1100' height='720' fill='%23bff5ff'/%3E%3Ccircle cx='895' cy='110' r='70' fill='%23fff17f'/%3E%3Cpath d='M0 410 C160 365 260 455 410 410 S690 350 1100 430 V720 H0Z' fill='%238eeaff'/%3E%3Cpath d='M0 520 C150 470 300 550 455 505 S760 470 1100 535 V720 H0Z' fill='%23ffdfa1'/%3E%3Cpath d='M690 500 C700 380 760 280 860 235' stroke='%238d674c' stroke-width='18' fill='none'/%3E%3Cpath d='M835 230 C735 190 685 230 668 300 C760 292 815 270 835 230Z' fill='%237bd57c'/%3E%3Cpath d='M870 220 C835 125 748 105 690 152 C762 205 820 226 870 220Z' fill='%237bd57c'/%3E%3Cpath d='M910 230 C1005 200 1040 250 1030 315 C965 298 925 265 910 230Z' fill='%237bd57c'/%3E%3C/svg%3E"); }
+    .scene-mountain { background-image: url("data:image/svg+xml,%3Csvg width='1100' height='720' viewBox='0 0 1100 720' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop stop-color='%23d6f6ff'/%3E%3Cstop offset='1' stop-color='%23fff0fb'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='1100' height='720' fill='url(%23g)'/%3E%3Cg fill='%23fff' opacity='.9'%3E%3Cellipse cx='240' cy='135' rx='100' ry='32'/%3E%3Cellipse cx='590' cy='110' rx='90' ry='30'/%3E%3C/g%3E%3Cpath d='M-20 620 L260 210 L540 620Z' fill='%239ee08d'/%3E%3Cpath d='M260 210 L350 345 L175 345Z' fill='%23fff'/%3E%3Cpath d='M330 620 L610 260 L910 620Z' fill='%238bd3ff'/%3E%3Cpath d='M610 260 L710 380 L505 380Z' fill='%23fff'/%3E%3Cpath d='M700 620 L920 330 L1140 620Z' fill='%23ffbedb'/%3E%3Cpath d='M0 595 C200 545 360 640 540 585 S860 540 1100 590 V720 H0Z' fill='%23d8f5c4'/%3E%3C/svg%3E"); }
+    .scene-heart { background-image: url("data:image/svg+xml,%3Csvg width='1100' height='720' viewBox='0 0 1100 720' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%23ffe4f2'/%3E%3Cstop offset='1' stop-color='%23e8f8ff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='1100' height='720' fill='url(%23g)'/%3E%3Cpath d='M550 610 C250 360 170 240 205 120 C240 0 435 0 550 160 C665 0 860 0 895 120 C930 240 850 360 550 610Z' fill='%23ff85be' opacity='.55'/%3E%3Cg fill='%23fff' opacity='.9'%3E%3Cellipse cx='180' cy='115' rx='90' ry='30'/%3E%3Cellipse cx='840' cy='145' rx='100' ry='32'/%3E%3C/g%3E%3Cpath d='M0 570 C170 510 290 605 430 548 S725 500 1100 565 V720 H0Z' fill='%23fff2a8'/%3E%3C/svg%3E"); }
+
+    .landing-plane { left: -170px; top: 120px; transform: rotate(12deg) scale(1.25); animation: land 2.1s ease-in-out forwards; }
+    @keyframes land {
+      0% { left: -170px; top: 80px; transform: rotate(12deg) scale(1.35); }
+      70% { left: 45%; top: 54%; transform: rotate(-4deg) scale(1.05); }
+      100% { left: 48%; top: 58%; transform: rotate(0) scale(.92); }
+    }
+
+    .scene-helper {
+      position: absolute;
+      left: 50%;
+      bottom: 22px;
+      transform: translateX(-50%);
+      width: min(720px, 90vw);
+      padding: 18px 20px;
+      border-radius: 28px;
+      background: rgba(255,255,255,.88);
+      border: 5px solid #fff;
+      text-align: center;
+      font-size: 20px;
+      line-height: 1.45;
+      z-index: 11;
+      box-shadow: 0 12px 26px rgba(255, 113, 176, .24);
+    }
+
+    .scene-actions { margin-top: 12px; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+
+    .toy {
+      position: absolute;
+      width: 112px;
+      height: 112px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      z-index: 7;
+      animation: bob 2s ease-in-out infinite;
+      filter: drop-shadow(0 12px 10px rgba(93, 74, 92, .18));
+    }
+
+    .toy::after {
+      content: "click";
+      position: absolute;
+      left: 50%;
+      bottom: -16px;
+      transform: translateX(-50%);
+      background: #fff;
+      color: #ff5da5;
+      font-size: 12px;
+      padding: 3px 9px;
+      border-radius: 99px;
+      border: 2px solid #ffd2e8;
+    }
+
+    .toy.clicked { animation: popToy .5s ease; }
+    @keyframes popToy { 0% { transform: scale(1); } 50% { transform: scale(1.28) rotate(8deg); } 100% { transform: scale(1); } }
+
+    .toy-1 { left: 14%; top: 58%; }
+    .toy-2 { left: 74%; top: 48%; animation-delay: .25s; }
+    .toy-3 { left: 43%; top: 35%; animation-delay: .5s; }
+
+    .postcard { background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='18' y='28' width='84' height='60' rx='10' fill='%23fff7c9' stroke='%23ff91c6' stroke-width='5'/%3E%3Cpath d='M25 78 L50 55 L65 70 L78 58 L98 82' fill='none' stroke='%238ee8ff' stroke-width='6'/%3E%3Ccircle cx='82' cy='45' r='9' fill='%23ffe36e'/%3E%3C/svg%3E"); }
+    .camera { background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='20' y='38' width='80' height='55' rx='12' fill='%238ee8ff' stroke='%23fff' stroke-width='6'/%3E%3Crect x='37' y='27' width='26' height='18' rx='5' fill='%23ff91c6'/%3E%3Ccircle cx='60' cy='66' r='18' fill='%23fff'/%3E%3Ccircle cx='60' cy='66' r='10' fill='%23ff91c6'/%3E%3Ccircle cx='86' cy='49' r='5' fill='%23fff36d'/%3E%3C/svg%3E"); }
+    .ticket { background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 42 h80 v18 c-12 0-12 20 0 20 v18 H20 V80 c12 0 12-20 0-20Z' fill='%23ffb8dc' stroke='%23fff' stroke-width='6'/%3E%3Cpath d='M47 44 v52' stroke='%23fff' stroke-width='5' stroke-dasharray='6 6'/%3E%3Cpath d='M60 58 h27 M60 75 h20' stroke='%23784864' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E"); }
+    .shell { background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M60 25 C30 43 25 73 45 94 H75 C95 73 90 43 60 25Z' fill='%23ffd0e8' stroke='%23fff' stroke-width='6'/%3E%3Cpath d='M60 30 V92 M42 48 L55 92 M78 48 L65 92 M32 65 L52 94 M88 65 L68 94' stroke='%23ff7cb9' stroke-width='4'/%3E%3C/svg%3E"); }
+    .suncream { background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='42' y='25' width='36' height='72' rx='13' fill='%23fff3a8' stroke='%23fff' stroke-width='6'/%3E%3Crect x='47' y='18' width='26' height='14' rx='4' fill='%23ff91c6'/%3E%3Ccircle cx='60' cy='60' r='14' fill='%23ffcf5d'/%3E%3Cpath d='M60 38 v8 M60 74 v8 M38 60 h8 M74 60 h8' stroke='%23ff91c6' stroke-width='5'/%3E%3C/svg%3E"); }
+    .drink { background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M38 38 H82 L75 98 H45Z' fill='%238ee8ff' stroke='%23fff' stroke-width='6'/%3E%3Cpath d='M43 58 H77 L73 94 H47Z' fill='%23ff91c6' opacity='.75'/%3E%3Cpath d='M67 36 L86 18' stroke='%23784864' stroke-width='5'/%3E%3Ccircle cx='78' cy='34' r='10' fill='%23ffe36e'/%3E%3C/svg%3E"); }
+    .flower { background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M60 58 C45 30 75 30 60 58Z' fill='%23ff91c6'/%3E%3Cpath d='M60 58 C90 43 90 73 60 58Z' fill='%23ffd85d'/%3E%3Cpath d='M60 58 C75 88 45 88 60 58Z' fill='%238ee8ff'/%3E%3Cpath d='M60 58 C30 73 30 43 60 58Z' fill='%23b7ef86'/%3E%3Ccircle cx='60' cy='58' r='10' fill='%23fff'/%3E%3Cpath d='M60 68 C58 82 52 93 39 101 M61 72 C72 78 79 88 82 101' stroke='%2376bf6b' stroke-width='6' fill='none'/%3E%3C/svg%3E"); }
+    .cloudtoy { background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23fff' stroke='%238ee8ff' stroke-width='5'%3E%3Cellipse cx='48' cy='66' rx='28' ry='20'/%3E%3Cellipse cx='67' cy='54' rx='25' ry='26'/%3E%3Cellipse cx='82' cy='68' rx='28' ry='19'/%3E%3C/g%3E%3Ccircle cx='55' cy='67' r='4' fill='%23784864'/%3E%3Ccircle cx='78' cy='67' r='4' fill='%23784864'/%3E%3Cpath d='M60 78 Q67 84 74 78' stroke='%23784864' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); }
+    .star { background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M60 14 L73 45 L106 48 L81 70 L88 103 L60 85 L32 103 L39 70 L14 48 L47 45Z' fill='%23fff36d' stroke='%23fff' stroke-width='6'/%3E%3Ccircle cx='50' cy='60' r='4' fill='%23784864'/%3E%3Ccircle cx='70' cy='60' r='4' fill='%23784864'/%3E%3Cpath d='M52 74 Q60 80 68 74' stroke='%23784864' stroke-width='4' fill='none'/%3E%3C/svg%3E"); }
+    .heartgift { background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='25' y='52' width='70' height='45' rx='9' fill='%23ff91c6' stroke='%23fff' stroke-width='6'/%3E%3Cpath d='M60 52 v45 M25 66 h70' stroke='%23fff36d' stroke-width='8'/%3E%3Cpath d='M60 48 C45 35 43 27 48 22 C54 16 62 23 60 48Z' fill='%23ff91c6' stroke='%23fff' stroke-width='5'/%3E%3Cpath d='M60 48 C75 35 77 27 72 22 C66 16 58 23 60 48Z' fill='%23ff91c6' stroke='%23fff' stroke-width='5'/%3E%3C/svg%3E"); }
+    .lettertoy { background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='20' y='35' width='80' height='55' rx='10' fill='%23fff7c9' stroke='%23ff91c6' stroke-width='6'/%3E%3Cpath d='M22 38 L60 68 L98 38 M22 90 L50 62 M98 90 L70 62' fill='none' stroke='%23ff91c6' stroke-width='5'/%3E%3C/svg%3E"); }
+    .ringstar { background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='60' cy='67' r='28' fill='none' stroke='%23fff36d' stroke-width='10'/%3E%3Cpath d='M60 16 L68 37 L91 38 L73 53 L79 76 L60 63 L41 76 L47 53 L29 38 L52 37Z' fill='%23ff91c6' stroke='%23fff' stroke-width='5'/%3E%3C/svg%3E"); }
+
+    .gift-pop {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) scale(.75);
+      width: min(520px, 86vw);
+      padding: 26px 22px 22px;
+      border-radius: 32px;
+      background: rgba(255,255,255,.94);
+      border: 7px solid #fff;
+      text-align: center;
+      box-shadow: 0 24px 45px rgba(255, 108, 170, .32);
+      opacity: 0;
+      pointer-events: none;
+      transition: .35s ease;
+      z-index: 24;
+    }
+
+    .gift-pop.show { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
+    .gift-gif { width: 125px; height: 125px; margin: 0 auto 10px; background-size: contain; background-repeat: no-repeat; background-position: center; animation: cuteWiggle .8s ease-in-out infinite alternate; }
+    @keyframes cuteWiggle { from { transform: rotate(-4deg) scale(.98); } to { transform: rotate(4deg) scale(1.04); } }
+    .gift-pop h2 { color: #ff5da5; font-size: 25px; margin-bottom: 8px; }
+    .gift-pop p { font-size: 19px; line-height: 1.45; }
+    .gift-ok { margin-top: 16px; }
+
+    .message-pop {
+      position: absolute;
+      left: 50%;
+      bottom: 120px;
+      transform: translateX(-50%) translateY(160%);
+      width: min(680px, 88vw);
+      background: rgba(255,255,255,.94);
+      border: 6px solid #fff;
+      border-radius: 28px;
+      padding: 22px;
+      text-align: center;
+      box-shadow: 0 16px 35px rgba(255, 108, 170, .25);
+      transition: .55s ease;
+      z-index: 18;
+    }
+
+    .message-pop.show { transform: translateX(-50%) translateY(0); }
+    .message-pop h2 { color: #ff5da5; margin-bottom: 8px; font-size: 26px; }
+    .message-pop p { font-size: 19px; line-height: 1.5; }
+
+    .close-pop {
+      position: absolute;
+      top: -18px;
+      right: -18px;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: #ff76b8;
+      color: white;
+      font-size: 25px;
+      box-shadow: 0 8px 0 #cf4c8c;
+      display: none;
+    }
+
+    .close-pop.visible { display: block; }
+
+    .letter {
+      position: absolute;
+      top: -420px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-5deg);
+      width: min(650px, 90vw);
+      min-height: 290px;
+      padding: 38px 32px;
+      border-radius: 20px;
+      background: url("data:image/svg+xml,%3Csvg width='700' height='360' viewBox='0 0 700 360' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='700' height='360' rx='26' fill='%23fffaf0'/%3E%3Cpath d='M0 0 L350 190 L700 0' fill='none' stroke='%23ffd2e8' stroke-width='12'/%3E%3Cpath d='M0 360 L268 140' fill='none' stroke='%23ffd2e8' stroke-width='10'/%3E%3Cpath d='M700 360 L432 140' fill='none' stroke='%23ffd2e8' stroke-width='10'/%3E%3Ccircle cx='350' cy='185' r='48' fill='%23ff78b9'/%3E%3Cpath d='M350 210 C329 193 323 184 326 173 C329 161 342 160 350 170 C358 160 371 161 374 173 C377 184 371 193 350 210Z' fill='%23fff'/%3E%3C/svg%3E");
+      background-size: cover;
+      box-shadow: 0 28px 55px rgba(115, 75, 100, .32);
+      text-align: center;
+      z-index: 30;
+      opacity: 0;
+    }
+
+    .letter.drop { animation: dropLetter 1.2s cubic-bezier(.18,.89,.32,1.28) forwards; }
+    @keyframes dropLetter {
+      0% { top: -420px; opacity: 0; transform: translateX(-50%) rotate(-18deg); }
+      70% { top: 170px; opacity: 1; transform: translateX(-50%) rotate(6deg); }
+      100% { top: 140px; opacity: 1; transform: translateX(-50%) rotate(0); }
+    }
+
+    .letter p { margin-top: 128px; font-size: clamp(21px, 3vw, 31px); line-height: 1.5; color: #79445f; font-weight: 800; text-shadow: 1px 1px 0 #fff; }
+
+    .sparkle {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0 L25 15 L40 20 L25 25 L20 40 L15 25 L0 20 L15 15Z' fill='%23fff36d'/%3E%3C/svg%3E");
+      background-size: contain;
+      animation: sparkle 1.4s ease-in-out infinite;
+      z-index: 6;
+      pointer-events: none;
+    }
+
+    @keyframes sparkle { 0%, 100% { transform: scale(.4) rotate(0); opacity: .45; } 50% { transform: scale(1.2) rotate(120deg); opacity: 1; } }
+
+    @media (max-width: 1024px) {
+      .screen { padding: 16px; }
+      .map-wrap, .scene-wrap {
+        width: 96vw;
+        height: min(720px, 92vh);
+        border-radius: 28px;
+      }
+      .destination {
+        width: 104px;
+        height: 104px;
+        font-size: 13px;
+      }
+      .destination .icon {
+        width: 48px;
+        height: 48px;
+      }
+      .scene-helper {
+        width: min(720px, 92vw);
+        font-size: 18px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      body { overflow: hidden; }
+      .screen { padding: 10px; }
+      .intro-card {
+        width: 96vw;
+        min-height: auto;
+        max-height: 94vh;
+        overflow-y: auto;
+        padding: 22px 16px;
+        border-radius: 28px;
+      }
+      .floating-plane {
+        width: 150px;
+        height: 108px;
+      }
+      h1 { font-size: clamp(30px, 10vw, 46px); }
+      .subtitle {
+        font-size: 16px;
+        padding: 12px 14px;
+      }
+      .button-row {
+        flex-direction: column;
+        gap: 14px;
+      }
+      .cute-btn {
+        width: min(330px, 88vw);
+        font-size: 17px;
+        padding: 14px 18px;
+      }
+      .map-wrap, .scene-wrap {
+        width: 96vw;
+        height: 92vh;
+        border-radius: 24px;
+        border-width: 5px;
+      }
+      .map-title, .scene-title {
+        top: 10px;
+        width: calc(100% - 22px);
+        white-space: normal;
+        font-size: 17px;
+        padding: 9px 14px;
+      }
+      .flight-lines path {
+        stroke-width: 7;
+        stroke-dasharray: 12 12;
+      }
+      .destination {
+        width: 78px;
+        height: 78px;
+        font-size: 10px;
+        border-width: 3px;
+        gap: 2px;
+        padding: 3px;
+      }
+      .destination .icon {
+        width: 34px;
+        height: 34px;
+      }
+      .place-1 { left: 4%; top: 23%; }
+      .place-2 { left: 35%; top: 14%; }
+      .place-3 { left: 63%; top: 25%; }
+      .place-4 { left: 72%; top: 45%; }
+      .place-5 { left: 53%; top: 66%; }
+      .place-6 { left: 25%; top: 58%; }
+      .place-7 { left: 73%; top: 75%; }
+      .plane-on-map, .landing-plane {
+        width: 82px;
+        height: 54px;
+      }
+      .toy {
+        width: 78px;
+        height: 78px;
+      }
+      .toy::after {
+        font-size: 10px;
+        bottom: -13px;
+      }
+      .toy-1 { left: 9%; top: 55%; }
+      .toy-2 { left: 70%; top: 47%; }
+      .toy-3 { left: 40%; top: 31%; }
+      .scene-helper {
+        bottom: 10px;
+        width: calc(100% - 18px);
+        font-size: 15px;
+        padding: 12px 12px;
+        border-radius: 22px;
+        border-width: 4px;
+      }
+      .scene-actions {
+        gap: 8px;
+      }
+      .tiny-btn {
+        font-size: 14px;
+        padding: 9px 13px;
+      }
+      .gift-pop {
+        width: calc(100% - 26px);
+        padding: 18px 14px;
+        border-radius: 24px;
+      }
+      .gift-gif {
+        width: 92px;
+        height: 92px;
+      }
+      .gift-pop h2 {
+        font-size: 21px;
+      }
+      .gift-pop p {
+        font-size: 16px;
+      }
+      .message-pop {
+        width: calc(100% - 22px);
+        bottom: 118px;
+        padding: 16px 14px;
+        border-radius: 22px;
+      }
+      .message-pop h2 {
+        font-size: 20px;
+      }
+      .message-pop p {
+        font-size: 15px;
+      }
+      .close-pop {
+        width: 40px;
+        height: 40px;
+        font-size: 22px;
+        top: -15px;
+        right: -10px;
+      }
+      .letter {
+        width: calc(100% - 24px);
+        min-height: 245px;
+      }
+      .letter p {
+        margin-top: 100px;
+        font-size: 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .screen { padding: 6px; }
+      .intro-card {
+        width: 98vw;
+        border-radius: 22px;
+        border-width: 5px;
+      }
+      .floating-plane {
+        width: 130px;
+        height: 92px;
+      }
+      .subtitle { font-size: 15px; }
+      .map-wrap, .scene-wrap {
+        width: 98vw;
+        height: 94vh;
+        border-radius: 18px;
+      }
+      .map-title, .scene-title {
+        font-size: 15px;
+        padding: 8px 10px;
+      }
+      .destination {
+        width: 68px;
+        height: 68px;
+        font-size: 9px;
+      }
+      .destination .icon {
+        width: 29px;
+        height: 29px;
+      }
+      .place-1 { left: 3%; top: 21%; }
+      .place-2 { left: 32%; top: 13%; }
+      .place-3 { left: 61%; top: 24%; }
+      .place-4 { left: 72%; top: 43%; }
+      .place-5 { left: 51%; top: 65%; }
+      .place-6 { left: 22%; top: 56%; }
+      .place-7 { left: 72%; top: 76%; }
+      .toy {
+        width: 68px;
+        height: 68px;
+      }
+      .toy-1 { left: 8%; top: 54%; }
+      .toy-2 { left: 69%; top: 46%; }
+      .toy-3 { left: 39%; top: 30%; }
+      .scene-helper {
+        font-size: 14px;
+        bottom: 8px;
+      }
+      .message-pop {
+        bottom: 126px;
+      }
+      .gift-gif {
+        width: 82px;
+        height: 82px;
+      }
+      .letter p {
+        font-size: 18px;
+      }
+    }
+
+    @media (max-height: 620px) {
+      .intro-card {
+        max-height: 94vh;
+        overflow-y: auto;
+      }
+      .floating-plane {
+        width: 110px;
+        height: 78px;
+        margin-bottom: 2px;
+      }
+      h1 { font-size: 30px; }
+      .subtitle { font-size: 14px; margin-bottom: 12px; }
+      .map-title, .scene-title {
+        top: 6px;
+        font-size: 14px;
+      }
+      .scene-helper {
+        font-size: 13px;
+        padding: 9px;
+      }
+      .message-pop {
+        bottom: 96px;
+        padding: 12px;
+      }
+      .gift-pop {
+        padding: 14px;
+      }
+      .gift-gif {
+        width: 70px;
+        height: 70px;
+      }
+    }
+  </style>
 </head>
 <body>
-<div id="app">
-
-<!-- ═══ SCREEN 1 ═══ -->
-<div class="screen active" id="s1">
-  <div class="ground"></div>
-  <div class="sun"></div>
-
-  <div class="cld cld-1"><img src="./image/cloud1.png" alt=""></div>
-  <div class="cld cld-2"><img src="./image/cloud.png" alt=""></div>
-  <div class="cld cld-3"><img src="./image/cloud1.png" alt=""></div>
-  <div class="cld cld-4"><img src="./image/cloud.png" alt=""></div>
-
-  <div class="birds">
-    <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14/assets/svg/1f426.svg" alt="">
-    <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14/assets/svg/1f426.svg" alt="">
-    <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14/assets/svg/1f426.svg" alt="">
-  </div>
-
-  <div class="hero-plane">
-    <img src="./image/plane.png" alt="plane">
-  </div>
-
-  <div class="under-clouds">
-    <img src="./image/cloud2.png" alt="">
-    <img src="./image/cloud.png" alt="">
-    <img src="./image/cloud2.png" alt="">
-  </div>
-
-  <div class="s1-title">✈️ Cùng Khám Phá Việt Nam!</div>
-  <div class="s1-sub">Một chuyến bay nhỏ qua những nơi tuyệt vời nhất 🌸</div>
-  <div class="s1-sub">Chuyến bay này dành riêng cho mỗi Thu Hiền thôi :3</div>
-
-  <div class="btn-area">
-    <button class="btn-fly" id="btnFly" onclick="goToMap()">
-      <img src="./image/plane.png" alt="">
-      Chuẩn bị bay nhé!
-    </button>
-    <button class="btn-nope" id="btnNope" onclick="clickNope()">
-      <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14/assets/svg/1f914.svg" alt="">
-      Không chịu bay đâu
-    </button>
-  </div>
-
-  <div class="flowers">
-    <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14/assets/svg/1f337.svg" alt="">
-    <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14/assets/svg/1f338.svg" alt="">
-    <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14/assets/svg/1f33c.svg" alt="">
-    <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14/assets/svg/1f339.svg" alt="">
-    <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14/assets/svg/1f338.svg" alt="">
-    <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14/assets/svg/1f33c.svg" alt="">
-    <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14/assets/svg/1f337.svg" alt="">
-  </div>
-</div>
-
-<!-- ═══ SCREEN 2 ═══ -->
-<div class="screen hidden" id="s2">
-  <div class="bg-clds">
-    <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14/assets/svg/2601.svg" style="width:18vmin;top:4%;left:1%">
-    <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14/assets/svg/1f325.svg" style="width:13vmin;top:14%;right:3%;animation-delay:1.2s">
-    <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14/assets/svg/2601.svg" style="width:11vmin;top:38%;left:5%;animation-delay:2s">
-    <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14/assets/svg/1f325.svg" style="width:10vmin;top:55%;right:7%;animation-delay:.5s">
-    <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14/assets/svg/2601.svg" style="width:8vmin;top:70%;left:22%;animation-delay:3s">
-  </div>
-
-  <div class="s2-hd">
-    <img src="./image/plane.png" width="100" alt="">
-    <div class="s2-hd-title">Lộ trình bay của mình</div>
-    <img src="./image/plane.png" alt="">
-  </div>
-
-  <div class="prog-wrap">
-    <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
-    <div class="prog-lbl" id="progLbl">0 / 5 điểm</div>
-  </div>
-
-  <!-- All pin left/top values are % of .map-zone → responsive on every screen -->
-  <div class="map-zone" id="mapZone">
-    <svg class="map-paths" id="svgPaths"></svg>
-
-    <div class="map-plane" id="mapPlane">
-      <img src="./image/plane.png" alt="plane">
-    </div>
-
-    <div class="pin" id="pin0" style="left:10%;top:8%" onclick="selectPin(0)">
-      <div class="pin-img"><img src="https://media.giphy.com/media/3o7TKSha51ATTx9KzC/giphy.gif" alt="Hà Nội"></div>
-      <div class="pin-lbl">🏯 Hà Nội</div>
-      <div class="pin-dot"></div>
-    </div>
-    <div class="pin" id="pin1" style="left:30%;top:52%" onclick="selectPin(1)">
-      <div class="pin-img"><img src="https://media.giphy.com/media/l0HlNQ03J5JxX96oo/giphy.gif" alt="Đà Nẵng"></div>
-      <div class="pin-lbl">🌊 Đà Nẵng</div>
-      <div class="pin-dot"></div>
-    </div>
-    <div class="pin" id="pin2" style="left:52%;top:14%" onclick="selectPin(2)">
-      <div class="pin-img"><img src="https://media.giphy.com/media/26tPplGWjN0xLybiU/giphy.gif" alt="Nha Trang"></div>
-      <div class="pin-lbl">🌴 Nha Trang</div>
-      <div class="pin-dot"></div>
-    </div>
-    <div class="pin" id="pin3" style="left:70%;top:60%" onclick="selectPin(3)">
-      <div class="pin-img"><img src="https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif" alt="Phú Quốc"></div>
-      <div class="pin-lbl">🏝️ Phú Quốc</div>
-      <div class="pin-dot"></div>
-    </div>
-    <div class="pin" id="pin4" style="left:86%;top:22%" onclick="selectPin(4)">
-      <div class="pin-img"><img src="https://media.giphy.com/media/xT9IgDEI1iZyb2wqo8/giphy.gif" alt="Sài Gòn"></div>
-      <div class="pin-lbl">🌆 Sài Gòn</div>
-      <div class="pin-dot"></div>
-    </div>
-  </div>
-
-  <div class="map-hint" id="mapHint">✨ Click vào từng điểm để khám phá nhé!</div>
-
-  <div class="detail-panel" id="detailPanel">
-    <button class="dp-close" onclick="closeDetail()">✕</button>
-    <div class="dp-body">
-      <div class="dp-gif"><img id="dpGif" src="" alt=""></div>
-      <div class="dp-info">
-        <div class="dp-flag" id="dpFlag"></div>
-        <div class="dp-name" id="dpName"></div>
-        <div class="dp-greet" id="dpGreet"></div>
-        <div class="dp-text" id="dpText"></div>
+  <section id="intro" class="screen sky-bg active">
+    <div class="intro-card">
+      <div class="floating-plane"></div>
+      <h1>Chuyến bay dễ thương</h1>
+      <p class="subtitle">Có một hành trình nhỏ dành riêng cho một người làm du lịch rất đáng yêu. Mình cùng bay qua vài vùng đất vui nhộn nhé?</p>
+      <div class="button-row">
+        <button id="flyBtn" class="cute-btn">Chuẩn bị bay cùng nhau ✈️</button>
+        <button id="noFlyBtn" class="cute-btn no-btn">Không bay cùng nhau 🥺</button>
       </div>
     </div>
-  </div>
-</div>
+  </section>
 
-<!-- ═══ LETTER OVERLAY ═══ -->
-<div id="letter-ov">
-  <div class="letter-box" id="letterBox">
-    <div class="env-wrap">
-      <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14/assets/svg/1f4e7.svg" alt="envelope">
+  <section id="mapScreen" class="screen sky-bg">
+    <div class="map-wrap" id="mapWrap">
+      <div class="map-title">Click từng điểm đến để hạ cánh 💕</div>
+      <div id="plane" class="plane-on-map"></div>
+      <button class="destination place-1" data-index="0"><span class="icon city"></span>Phố mộng mơ</button>
+      <button class="destination place-2 locked" data-index="1"><span class="icon beach"></span>Biển kẹo ngọt</button>
+      <button class="destination place-3 locked" data-index="2"><span class="icon city"></span>Chợ đêm ánh sao</button>
+      <button class="destination place-4 locked" data-index="3"><span class="icon mountain"></span>Núi mây hồng</button>
+      <button class="destination place-5 locked" data-index="4"><span class="icon beach"></span>Đảo hoàng hôn</button>
+      <button class="destination place-6 locked" data-index="5"><span class="icon city"></span>Thung lũng đèn lồng</button>
+      <button class="destination place-7 locked" data-index="6"><span class="icon heart"></span>Ga bí mật</button>
+
+      <svg class="flight-lines" viewBox="0 0 1100 720" preserveAspectRatio="none">
+        <path d="M170 250 C260 160 360 160 430 210" />
+        <path d="M430 210 C520 270 610 300 710 350" />
+        <path d="M710 350 C760 420 720 500 660 560" />
+        <path d="M660 560 C590 620 470 590 430 520" />
+        <path d="M430 520 C520 620 760 650 910 610" />
+      </svg>
     </div>
-    <div class="letter-card">
-      <div class="ltr-icon">💌</div>
-      <div class="ltr-title">
-        ✨Chuyến bay đến đây là hết rồi cấp 1 tí năng lượng dễ thương nhé<br>
-        hẹn em vào thứ 7 tuần này nhé.<br>
-        Anh sẽ kể cho em nghe nhiều điều hơn nữa 😊 ✨
+  </section>
+
+  <section id="sceneScreen" class="screen sky-bg">
+    <div id="sceneWrap" class="scene-wrap">
+      <div id="sceneTitle" class="scene-title">Đang hạ cánh...</div>
+      <div class="landing-plane"></div>
+      <button class="toy toy-1" id="toy1"></button>
+      <button class="toy toy-2" id="toy2"></button>
+      <button class="toy toy-3" id="toy3"></button>
+      <div class="scene-helper">
+        <div id="sceneText">Máy bay đang hạ cánh. Click vào 3 món đồ dễ thương trong cảnh này nhé.</div>
+        <div class="scene-actions">
+          <button id="backMapBtn" class="tiny-btn secondary">Quay lại bản đồ</button>
+          <button id="nextPlaceBtn" class="tiny-btn" style="display:none">Bay tiếp ✈️</button>
+        </div>
       </div>
-      <div class="ltr-sub">— từ người IT hay ho(Theo nghĩa đen 😁)💻💕 —</div>
-      <span class="ltr-hearts">🌸💙🌸</span><br>
-      <button class="ltr-btn" onclick="closeLetter()">Hẹn thứ 7 nhé! 🗓️</button>
+      <div id="giftPop" class="gift-pop">
+        <div id="giftGif" class="gift-gif"></div>
+        <h2 id="giftTitle">Một món quà nhỏ</h2>
+        <p id="giftText"></p>
+        <button id="giftOk" class="tiny-btn gift-ok">Nhận quà 💝</button>
+      </div>
+
+      <div id="messagePop" class="message-pop">
+        <button id="closePop" class="close-pop">×</button>
+        <h2 id="placeTitle">Xin chào!</h2>
+        <p id="placeText"></p>
+      </div>
+      <div id="letter" class="letter">
+        <p>✨ Còn nhiều điều thú vị nữa nhưng hẹn em vào thứ 7 tuần này nhé. Anh sẽ kể cho em nghe nhiều điều hơn nữa 😊 ✨</p>
+      </div>
     </div>
-  </div>
-</div>
+  </section>
 
-</div>
-<script>
-const STOPS = [
-  { name:'Hà Nội',   flag:'🏯', greet:'Xin chào từ Thủ đô ngàn năm văn hiến!',
-    text:'Hà Nội có 12 mùa hoa, 12 mùa nhớ, 12 mùa thương theo năm tháng. Trời hạ chầm chậm trôi, mùa hoa chầm chậm đến, chúng mình cũng chậm chậm thân nhau. 🍜',
-    gif:'https://media.giphy.com/media/3o7TKSha51ATTx9KzC/giphy.gif' },
-  { name:'Đà Nẵng',  flag:'🌊', greet:'Hello từ thành phố đáng sống nhất!',
-    text:'Biển Mỹ Khê trong xanh, cầu Rồng phun lửa cuối tuần, Bà Nà Hills mây mù lãng mạn. Buổi tối ven biển ăn hải sản là chân ái! 🐉🦞',
-    gif:'https://media.giphy.com/media/l0HlNQ03J5JxX96oo/giphy.gif' },
-  { name:'Nha Trang', flag:'🌴', greet:'Chào từ thành phố biển xinh đẹp!',
-    text:'Nước biển trong vắt như pha lê, đảo nhỏ nối nhau như chuỗi ngọc, hải sản tươi ngon mỗi sáng. Lặn biển ngắm san hô đẹp lắm! 🤿🐠',
-    gif:'https://media.giphy.com/media/26tPplGWjN0xLybiU/giphy.gif' },
-  { name:'Phú Quốc', flag:'🏝️', greet:'Welcome to Đảo Ngọc của Việt Nam!',
-    text:'Bãi Sao trắng mịn, hoàng hôn đẹp nhất Việt Nam, nước dừa mát lịm và rượu sim tím. Anh sẽ kể thêm bí mật về nơi này vào thứ 7! 🌅🥥',
-    gif:'https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif' },
-  { name:'Sài Gòn',  flag:'🌆', greet:'Hi từ thành phố không bao giờ ngủ!',
-    text:'Phố đi bộ Nguyễn Huệ lung linh, cơm tấm sườn 5 giờ sáng, bún bò Huế, và những con hẻm nhỏ đầy màu sắc! 🛵🌃',
-    gif:'https://media.giphy.com/media/xT9IgDEI1iZyb2wqo8/giphy.gif' },
-];
+  <script>
+    const intro = document.getElementById('intro');
+    const mapScreen = document.getElementById('mapScreen');
+    const sceneScreen = document.getElementById('sceneScreen');
+    const flyBtn = document.getElementById('flyBtn');
+    const noFlyBtn = document.getElementById('noFlyBtn');
+    const destinations = [...document.querySelectorAll('.destination')];
+    const plane = document.getElementById('plane');
+    const mapWrap = document.getElementById('mapWrap');
+    const sceneWrap = document.getElementById('sceneWrap');
+    const sceneTitle = document.getElementById('sceneTitle');
+    const sceneText = document.getElementById('sceneText');
+    const toys = [document.getElementById('toy1'), document.getElementById('toy2'), document.getElementById('toy3')];
+    const backMapBtn = document.getElementById('backMapBtn');
+    const nextPlaceBtn = document.getElementById('nextPlaceBtn');
+    const giftPop = document.getElementById('giftPop');
+    const giftGif = document.getElementById('giftGif');
+    const giftTitle = document.getElementById('giftTitle');
+    const giftText = document.getElementById('giftText');
+    const giftOk = document.getElementById('giftOk');
+    const messagePop = document.getElementById('messagePop');
+    const placeTitle = document.getElementById('placeTitle');
+    const placeText = document.getElementById('placeText');
+    const closePop = document.getElementById('closePop');
+    const letter = document.getElementById('letter');
 
-let visited = [], noHits = 0, allClosedOnce = false;
+    let yesScale = 1;
+    let currentStep = 0;
+    let activeScene = 0;
+    let foundItems = 0;
+    let finalReady = false;
 
-function clickNope() {
-  noHits++;
-  const fly  = document.getElementById('btnFly');
-  const nope = document.getElementById('btnNope');
-  const s = Math.min(1 + noHits * 0.14, 2.2);
-  fly.style.transform  = `scale(${s})`;
-  fly.style.boxShadow  = `0 ${8+noHits*4}px ${24+noHits*8}px rgba(168,85,247,${Math.min(.35+noHits*.1,.9)})`;
-  nope.style.opacity   = Math.max(1 - noHits * 0.22, 0.06).toString();
-  nope.style.transform = `scale(${Math.max(1 - noHits*.08, .55)})`;
-  if (noHits >= 5) { nope.disabled = true; nope.style.cursor = 'not-allowed'; }
-}
+    const gifs = {
+      bunny: "data:image/svg+xml,%3Csvg viewBox='0 0 130 130' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='65' cy='72' r='42' fill='%23ffd6ea'/%3E%3Cpath d='M40 38 C20 5 56 4 57 45' fill='%23ffd6ea' stroke='%23fff' stroke-width='6'/%3E%3Cpath d='M90 38 C110 5 74 4 73 45' fill='%23ffd6ea' stroke='%23fff' stroke-width='6'/%3E%3Ccircle cx='50' cy='68' r='6' fill='%236b3d5c'/%3E%3Ccircle cx='80' cy='68' r='6' fill='%236b3d5c'/%3E%3Cpath d='M55 84 Q65 94 75 84' stroke='%236b3d5c' stroke-width='5' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='38' cy='80' r='8' fill='%23ff8fc7' opacity='.7'/%3E%3Ccircle cx='92' cy='80' r='8' fill='%23ff8fc7' opacity='.7'/%3E%3C/svg%3E",
+      camera: "data:image/svg+xml,%3Csvg viewBox='0 0 130 130' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='20' y='42' width='90' height='62' rx='16' fill='%238ee8ff' stroke='%23fff' stroke-width='7'/%3E%3Crect x='40' y='30' width='30' height='18' rx='5' fill='%23ff91c6'/%3E%3Ccircle cx='65' cy='73' r='22' fill='%23fff'/%3E%3Ccircle cx='65' cy='73' r='12' fill='%23ff91c6'/%3E%3Cpath d='M96 28 L102 43 L118 44 L106 55 L110 70 L96 61 L82 70 L86 55 L74 44 L90 43Z' fill='%23fff36d'/%3E%3C/svg%3E",
+      heart: "data:image/svg+xml,%3Csvg viewBox='0 0 130 130' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M65 112 C28 80 18 64 22 44 C27 20 51 18 65 38 C79 18 103 20 108 44 C112 64 102 80 65 112Z' fill='%23ff78b9'/%3E%3Ccircle cx='49' cy='57' r='6' fill='%23fff'/%3E%3Ccircle cx='81' cy='57' r='6' fill='%23fff'/%3E%3Cpath d='M52 76 Q65 90 78 76' stroke='%23fff' stroke-width='6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E",
+      star: "data:image/svg+xml,%3Csvg viewBox='0 0 130 130' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M65 12 L80 47 L118 50 L89 75 L98 112 L65 92 L32 112 L41 75 L12 50 L50 47Z' fill='%23fff36d' stroke='%23fff' stroke-width='7'/%3E%3Ccircle cx='53' cy='62' r='5' fill='%23784864'/%3E%3Ccircle cx='77' cy='62' r='5' fill='%23784864'/%3E%3Cpath d='M55 78 Q65 86 75 78' stroke='%23784864' stroke-width='5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"
+    };
 
-function goToMap() {
-  document.getElementById('s1').classList.replace('active','hidden');
-  document.getElementById('s2').classList.replace('hidden','active');
-  // initialise plane position after screen visible
-  requestAnimationFrame(() => requestAnimationFrame(() => initPlane()));
-}
+    const scenes = [
+      {
+        cls: 'scene-city',
+        title: 'Hạ cánh tại Phố mộng mơ 🌷',
+        intro: 'Chào mừng đến Phố mộng mơ. Click 3 món đồ xinh để nhận lời nhắn nhé.',
+        toys: ['postcard', 'camera', 'ticket'],
+        gifts: [
+          { icon: 'bunny', title: 'Bưu thiếp dễ thương 💌', text: 'Anh gửi em một bưu thiếp nhỏ: mong cuối tuần này em có thật nhiều niềm vui.' },
+          { icon: 'camera', title: 'Máy ảnh mini 📸', text: 'Cuối tuần này cho anh chụp ảnh cùng em nhé!' },
+          { icon: 'star', title: 'Chiếc vé hẹn hò ✈️', text: 'Chiếc vé này chỉ có một điểm đến: một buổi gặp thật vui cùng em.' }
+        ],
+        doneTitle: 'Phố mộng mơ đã sáng đèn ✨',
+        doneText: 'Ở đây có bưu thiếp, ảnh xinh và một chiếc vé nhỏ dẫn tới nụ cười của em.'
+      },
+      {
+        cls: 'scene-beach',
+        title: 'Hạ cánh tại Biển kẹo ngọt 🏖️',
+        intro: 'Biển xanh đang đợi rồi. Click 3 món đồ nhỏ để nhận quà từ sóng biển nhé.',
+        toys: ['shell', 'suncream', 'drink'],
+        gifts: [
+          { icon: 'bunny', title: 'Vỏ sò biết nói 🐚', text: 'Vỏ sò nói nhỏ: đi chơi với em chắc sẽ vui như nghe biển hát vậy.' },
+          { icon: 'heart', title: 'Nắng dịu dàng ☀️', text: 'Đi đâu cũng nhớ cười thật tươi nha, vì nụ cười của em hợp với nắng lắm.' },
+          { icon: 'star', title: 'Ly nước mát 🍹', text: 'Tặng em một ly năng lượng ngọt ngào để cuối tuần mình có mood thật vui.' }
+        ],
+        doneTitle: 'Sóng biển gửi lời chào 🌊',
+        doneText: 'Mỗi con sóng ở đây đều nói rằng: hôm nay em đã làm rất tốt rồi, nhớ cười nhiều nha.'
+      },
+      {
+        cls: 'scene-city',
+        title: 'Hạ cánh tại Khu chợ đêm ánh sao 🌃',
+        intro: 'Chợ đêm đang lung linh rồi. Click các món đồ để khám phá nha.',
+        toys: ['drink', 'camera', 'heartgift'],
+        gifts: [
+          { icon: 'star', title: 'Ly trà sữa mini 🧋', text: 'Nếu đi chợ đêm cùng em chắc anh sẽ mua đồ ăn suốt mất.' },
+          { icon: 'camera', title: 'Máy ảnh đêm ✨', text: 'Đèn ở đây đẹp thật… nhưng chắc vẫn không bằng lúc em cười.' },
+          { icon: 'heart', title: 'Gấu bông trúng thưởng 🧸', text: 'Anh vừa chơi game và thắng được một bé gấu muốn tặng em.' }
+        ],
+        doneTitle: 'Chợ đêm đã bật đèn 🌟',
+        doneText: 'Có vài nơi chỉ đẹp khi đi cùng đúng người.'
+      },
+      {
+        cls: 'scene-mountain',
+        title: 'Hạ cánh tại Núi mây hồng ☁️',
+        intro: 'Trên núi có gió nhẹ và mây xinh. Click 3 món đồ để mở thêm bí mật nhé.',
+        toys: ['flower', 'cloudtoy', 'star'],
+        gifts: [
+          { icon: 'heart', title: 'Bông hoa nhỏ 🌸', text: 'Bông hoa nói rằng em rất đáng yêu theo một cách rất riêng.' },
+          { icon: 'bunny', title: 'Đám mây mềm ☁️', text: 'Đám mây này xin phép che nắng cho em, còn anh xin phép kể chuyện cho em nghe.' },
+          { icon: 'star', title: 'Sao trên núi 💫', text: 'Ngôi sao bật mí: còn một điều bất ngờ đang đợi ở điểm cuối.' }
+        ],
+        doneTitle: 'Núi mây hồng vẫy tay 💫',
+        doneText: 'Bay lên cao một chút để thấy thế giới rộng lắm, nhưng có người vẫn chỉ muốn kể chuyện cho em nghe thôi.'
+      },
+      {
+        cls: 'scene-city',
+        title: 'Hạ cánh tại Thung lũng đèn lồng 🏮',
+        intro: 'Đèn lồng bắt đầu sáng rồi. Click 3 món đồ nhỏ để mở lời nhắn nha.',
+        toys: ['star', 'lettertoy', 'drink'],
+        gifts: [
+          { icon: 'star', title: 'Đèn lồng ước nguyện 🏮', text: 'Anh ước cuối tuần này được ngồi nghe em kể chuyện du lịch thật lâu.' },
+          { icon: 'bunny', title: 'Mảnh giấy điều ước 💌', text: 'Điều ước nhỏ xíu: mong em nhận lời hẹn thứ 7 này.' },
+          { icon: 'heart', title: 'Ly cacao ấm ☕', text: 'Nếu hôm đó trời mát, anh muốn mời em một ly gì đó thật ấm.' }
+        ],
+        doneTitle: 'Thung lũng đèn lồng đã sáng 🏮',
+        doneText: 'Mỗi chiếc đèn ở đây đều giữ một lời hẹn nhỏ dành cho em.'
+      },
+      {
+        cls: 'scene-heart',
+        title: 'Hạ cánh tại Ga bí mật 💌',
+        intro: 'Đây là điểm cuối của chuyến bay. Click 3 món đồ để mở lời hẹn nhé.',
+        toys: ['heartgift', 'lettertoy', 'ringstar'],
+        gifts: [
+          { icon: 'heart', title: 'Hộp quà tim 💝', text: 'Hộp quà mở ra một lời nhắn: cảm ơn em vì đã bay cùng anh tới đây.' },
+          { icon: 'bunny', title: 'Phong thư nhỏ 💌', text: 'Phong thư nói rằng có một lời hẹn rất xinh sắp rơi xuống đó.' },
+          { icon: 'star', title: 'Ngôi sao cuối 🌟', text: 'Xong rồi nè. Đọc lời nhắn cuối cùng và nhấn dấu × nhé.' }
+        ],
+        doneTitle: 'Ga bí mật đã mở khóa 💌',
+        doneText: 'Điểm cuối của chuyến bay hôm nay có một điều nhỏ xinh đang chờ em. Đọc xong hãy nhấn dấu × nhé.'
+      },
+      {
+        cls: 'scene-city',
+        title: 'Hạ cánh tại Phố mộng mơ 🌷',
+        intro: 'Chào mừng đến Phố mộng mơ. Click 3 món đồ xinh để nhận lời nhắn nhé.',
+        toys: ['postcard', 'camera', 'ticket'],
+        gifts: [
+          { icon: 'bunny', title: 'Bưu thiếp dễ thương 💌', text: 'Anh gửi em một bưu thiếp nhỏ: mong cuối tuần này em có thật nhiều niềm vui.' },
+          { icon: 'camera', title: 'Máy ảnh mini 📸', text: 'Cuối tuần này cho anh chụp ảnh cùng em nhé!' },
+          { icon: 'star', title: 'Chiếc vé hẹn hò ✈️', text: 'Chiếc vé này chỉ có một điểm đến: một buổi gặp thật vui cùng em.' }
+        ],
+        doneTitle: 'Phố mộng mơ đã sáng đèn ✨',
+        doneText: 'Ở đây có bưu thiếp, ảnh xinh và một chiếc vé nhỏ dẫn tới nụ cười của em.'
+      },
+      {
+        cls: 'scene-beach',
+        title: 'Hạ cánh tại Biển kẹo ngọt 🏖️',
+        intro: 'Biển xanh đang đợi rồi. Click 3 món đồ nhỏ để nhận quà từ sóng biển nhé.',
+        toys: ['shell', 'suncream', 'drink'],
+        gifts: [
+          { icon: 'bunny', title: 'Vỏ sò biết nói 🐚', text: 'Vỏ sò nói nhỏ: đi chơi với em chắc sẽ vui như nghe biển hát vậy.' },
+          { icon: 'heart', title: 'Nắng dịu dàng ☀️', text: 'Đi đâu cũng nhớ cười thật tươi nha, vì nụ cười của em hợp với nắng lắm.' },
+          { icon: 'star', title: 'Ly nước mát 🍹', text: 'Tặng em một ly năng lượng ngọt ngào để cuối tuần mình có mood thật vui.' }
+        ],
+        doneTitle: 'Sóng biển gửi lời chào 🌊',
+        doneText: 'Mỗi con sóng ở đây đều nói rằng: hôm nay em đã làm rất tốt rồi, nhớ cười nhiều nha.'
+      },
+      {
+        cls: 'scene-mountain',
+        title: 'Hạ cánh tại Núi mây hồng ☁️',
+        intro: 'Trên núi có gió nhẹ và mây xinh. Click 3 món đồ để mở thêm bí mật nhé.',
+        toys: ['flower', 'cloudtoy', 'star'],
+        gifts: [
+          { icon: 'heart', title: 'Bông hoa nhỏ 🌸', text: 'Bông hoa nói rằng em rất đáng yêu theo một cách rất riêng.' },
+          { icon: 'bunny', title: 'Đám mây mềm ☁️', text: 'Đám mây này xin phép che nắng cho em, còn anh xin phép kể chuyện cho em nghe.' },
+          { icon: 'star', title: 'Sao trên núi 💫', text: 'Ngôi sao bật mí: còn một điều bất ngờ đang đợi ở điểm cuối.' }
+        ],
+        doneTitle: 'Núi mây hồng vẫy tay 💫',
+        doneText: 'Bay lên cao một chút để thấy thế giới rộng lắm, nhưng có người vẫn chỉ muốn kể chuyện cho em nghe thôi.'
+      },
+      {
+        cls: 'scene-heart',
+        title: 'Hạ cánh tại Ga bí mật 💌',
+        intro: 'Đây là điểm cuối của chuyến bay. Click 3 món đồ để mở lời hẹn nhé.',
+        toys: ['heartgift', 'lettertoy', 'ringstar'],
+        gifts: [
+          { icon: 'heart', title: 'Hộp quà tim 💝', text: 'Hộp quà mở ra một lời nhắn: cảm ơn em vì đã bay cùng anh tới đây.' },
+          { icon: 'bunny', title: 'Phong thư nhỏ 💌', text: 'Phong thư nói rằng có một lời hẹn rất xinh sắp rơi xuống đó.' },
+          { icon: 'star', title: 'Ngôi sao cuối 🌟', text: 'Xong rồi nè. Đọc lời nhắn cuối cùng và nhấn dấu × nhé.' }
+        ],
+        doneTitle: 'Ga bí mật đã mở khóa 💌',
+        doneText: 'Điểm cuối của chuyến bay hôm nay có một điều nhỏ xinh đang chờ em. Đọc xong hãy nhấn dấu × nhé.'
+      }
+    ];
 
-function initPlane() {
-  const c = getPinCenter(0);
-  const pl = document.getElementById('mapPlane');
-  const pw = pl.querySelector('img').offsetWidth  || 40;
-  const ph = pl.querySelector('img').offsetHeight || 40;
-  pl.style.left = (c.x - pw/2) + 'px';
-  pl.style.top  = (c.y - ph - 8) + 'px';
-  // no transition on first placement
-  pl.style.transition = 'none';
-  requestAnimationFrame(() => { pl.style.transition = ''; });
-}
+    const planePositions = [
+      { left: '15%', top: '38%', rotate: '-8deg' },
+      { left: '40%', top: '28%', rotate: '8deg' },
+      { left: '58%', top: '44%', rotate: '18deg' },
+      { left: '74%', top: '52%', rotate: '5deg' },
+      { left: '60%', top: '72%', rotate: '-12deg' },
+      { left: '38%', top: '62%', rotate: '8deg' },
+      { left: '82%', top: '74%', rotate: '0deg' }
+    ];
 
-function getPinCenter(idx) {
-  const zone = document.getElementById('mapZone');
-  const pin  = document.getElementById('pin'+idx);
-  const zr   = zone.getBoundingClientRect();
-  const pr   = pin.getBoundingClientRect();
-  return { x: pr.left - zr.left + pr.width/2, y: pr.top - zr.top + pr.height/2 };
-}
+    noFlyBtn.addEventListener('click', () => {
+      yesScale += 0.25;
+      flyBtn.style.transform = `scale(${yesScale})`;
+      noFlyBtn.classList.remove('shake');
+      void noFlyBtn.offsetWidth;
+      noFlyBtn.classList.add('shake');
+      noFlyBtn.textContent = yesScale > 1.9 ? 'Thôi mà, bay đi 🥹' : 'Không bay cùng nhau 🥺';
+    });
 
-function movePlane(idx) {
-  const c  = getPinCenter(idx);
-  const pl = document.getElementById('mapPlane');
-  const img = pl.querySelector('img');
-  pl.style.left = (c.x - img.offsetWidth/2)  + 'px';
-  pl.style.top  = (c.y - img.offsetHeight - 8) + 'px';
-}
+    flyBtn.addEventListener('click', () => {
+      intro.classList.remove('active');
+      mapScreen.classList.add('active');
+      makeSparkles(mapWrap, 28);
+    });
 
-function drawPaths() {
-  const svg  = document.getElementById('svgPaths');
-  const zone = document.getElementById('mapZone');
-  const W = zone.offsetWidth, H = zone.offsetHeight;
-  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
-  svg.innerHTML = '';
-  if (visited.length < 2) return;
-  for (let i = 0; i < visited.length - 1; i++) {
-    const a = getPinCenter(visited[i]);
-    const b = getPinCenter(visited[i+1]);
-    const mx = (a.x+b.x)/2;
-    const my = Math.min(a.y,b.y) - H*0.13;
-    const path = document.createElementNS('http://www.w3.org/2000/svg','path');
-    path.setAttribute('d',`M${a.x},${a.y} Q${mx},${my} ${b.x},${b.y}`);
-    path.setAttribute('fill','none');
-    path.setAttribute('stroke','rgba(244,114,182,.5)');
-    path.setAttribute('stroke-width','2');
-    path.setAttribute('stroke-dasharray','6 5');
-    path.setAttribute('stroke-linecap','round');
-    svg.appendChild(path);
-    const t = document.createElementNS('http://www.w3.org/2000/svg','text');
-    t.setAttribute('x',mx); t.setAttribute('y',my+5);
-    t.setAttribute('text-anchor','middle');
-    t.setAttribute('font-size', Math.max(10, W*0.028).toFixed(0));
-    t.textContent = '🌸';
-    svg.appendChild(t);
-  }
-}
+    destinations.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const index = Number(btn.dataset.index);
+        if (index !== currentStep || btn.classList.contains('locked')) return;
+        flyToPlace(index);
+      });
+    });
 
-function selectPin(idx) {
-  if (!visited.includes(idx)) visited.push(idx);
-  document.querySelectorAll('.pin').forEach((p,i) => p.classList.toggle('visited', visited.includes(i)));
-  movePlane(idx);
-  drawPaths();
+    function flyToPlace(index) {
+      const pos = planePositions[index];
+      plane.style.left = pos.left;
+      plane.style.top = pos.top;
+      plane.style.transform = `rotate(${pos.rotate})`;
+      setTimeout(() => openScene(index), 950);
+    }
 
-  const pct = visited.length / STOPS.length * 100;
-  document.getElementById('progFill').style.width = pct + '%';
-  document.getElementById('progLbl').textContent  = `${visited.length} / ${STOPS.length} điểm ✨`;
+    function openScene(index) {
+      activeScene = index;
+      foundItems = 0;
+      finalReady = false;
+      giftPop.classList.remove('show');
+      messagePop.classList.remove('show');
+      closePop.classList.remove('visible');
+      nextPlaceBtn.style.display = 'none';
+      letter.classList.remove('drop');
 
-  const s = STOPS[idx];
-  document.getElementById('dpGif').src            = s.gif;
-  document.getElementById('dpFlag').textContent   = s.flag;
-  document.getElementById('dpName').textContent   = s.name;
-  document.getElementById('dpGreet').textContent  = s.greet;
-  document.getElementById('dpText').textContent   = s.text;
+      const data = scenes[index];
+      sceneWrap.className = `scene-wrap ${data.cls}`;
+      sceneTitle.textContent = data.title;
+      sceneText.textContent = data.intro;
 
-  const panel = document.getElementById('detailPanel');
-  panel.classList.remove('open');
-  requestAnimationFrame(() => requestAnimationFrame(() => panel.classList.add('open')));
-  allClosedOnce = false;
+      toys.forEach((toy, i) => {
+        toy.className = `toy toy-${i + 1} ${data.toys[i]}`;
+        toy.disabled = false;
+        toy.style.opacity = '1';
+        toy.dataset.index = i;
+      });
 
-  const rem = STOPS.length - visited.length;
-  document.getElementById('mapHint').textContent =
-    rem > 0 ? `✈️ Còn ${rem} điểm nữa, khám phá tiếp nào!`
-             : '🎉 Đã ghé hết rồi! Đọc xong nhấn ✕ để nhận bất ngờ 💌';
-}
+      mapScreen.classList.remove('active');
+      sceneScreen.classList.add('active');
+      makeSparkles(sceneWrap, 16);
+    }
 
-function closeDetail() {
-  document.getElementById('detailPanel').classList.remove('open');
-  if (visited.length === STOPS.length && !allClosedOnce) {
-    allClosedOnce = true;
-    setTimeout(showLetter, 450);
-  }
-}
+    toys.forEach((toy) => {
+      toy.addEventListener('click', () => {
+        const toyIndex = Number(toy.dataset.index);
+        if (toy.disabled) return;
+        toy.classList.add('clicked');
+        toy.disabled = true;
+        toy.style.opacity = '.42';
+        foundItems++;
+        showGift(toyIndex);
+        setTimeout(() => toy.classList.remove('clicked'), 500);
+      });
+    });
 
-function showLetter() {
-  document.getElementById('letter-ov').classList.add('show');
-  setTimeout(() => document.getElementById('letterBox').classList.add('dropped'), 80);
-  spawnConfetti();
-}
-function closeLetter() {
-  document.getElementById('letter-ov').classList.remove('show');
-  document.getElementById('letterBox').classList.remove('dropped');
-}
+    function showGift(toyIndex) {
+      const gift = scenes[activeScene].gifts[toyIndex];
+      giftGif.style.backgroundImage = `url("${gifs[gift.icon]}")`;
+      giftTitle.textContent = gift.title;
+      giftText.textContent = gift.text;
+      sceneText.textContent = `Đã nhận ${foundItems}/3 món quà dễ thương.`;
+      giftPop.classList.add('show');
+    }
 
-function spawnConfetti() {
-  const cols = ['#f472b6','#a855f7','#38bdf8','#fde68a','#6ee7b7','#fb923c','#f9a8d4'];
-  for (let i = 0; i < 65; i++) {
-    const d = document.createElement('div');
-    d.className = 'confetti';
-    const sz = 5 + Math.random()*8;
-    d.style.cssText = `
-      left:${Math.random()*100}vw; top:-12px;
-      width:${sz}px; height:${sz}px;
-      background:${cols[Math.floor(Math.random()*cols.length)]};
-      border-radius:${Math.random()>.5?'50%':'3px'};
-      animation-duration:${1.6+Math.random()*2.2}s;
-      animation-delay:${Math.random()*.9}s;
-    `;
-    document.body.appendChild(d);
-    setTimeout(() => d.remove(), 4500);
-  }
-}
+    giftOk.addEventListener('click', () => {
+      giftPop.classList.remove('show');
+      if (foundItems === 3) completeScene();
+    });
 
-window.addEventListener('resize', () => {
-  drawPaths();
-  if (visited.length) movePlane(visited[visited.length-1]);
-});
-</script>
+    function completeScene() {
+      const data = scenes[activeScene];
+      placeTitle.textContent = data.doneTitle;
+      placeText.textContent = data.doneText;
+      messagePop.classList.add('show');
+      sceneText.textContent = activeScene === scenes.length - 1
+        ? 'Điểm cuối đã mở rồi. Nhấn dấu × trên khung lời nhắn để nhận thư nhé.'
+        : 'Tuyệt vời! Nhấn “Bay tiếp” để qua điểm đến kế tiếp nhé.';
+
+      if (activeScene === scenes.length - 1) {
+        finalReady = true;
+        closePop.classList.add('visible');
+        nextPlaceBtn.style.display = 'none';
+      } else {
+        nextPlaceBtn.style.display = 'inline-block';
+      }
+    }
+
+    nextPlaceBtn.addEventListener('click', () => {
+      finishCurrentScene();
+      backToMap();
+    });
+
+    backMapBtn.addEventListener('click', () => backToMap());
+
+    function finishCurrentScene() {
+      destinations[activeScene].classList.add('locked');
+      if (activeScene < destinations.length - 1) {
+        currentStep = activeScene + 1;
+        destinations[currentStep].classList.remove('locked');
+      }
+    }
+
+    function backToMap() {
+      giftPop.classList.remove('show');
+      messagePop.classList.remove('show');
+      sceneScreen.classList.remove('active');
+      mapScreen.classList.add('active');
+    }
+
+    closePop.addEventListener('click', () => {
+      if (!finalReady) return;
+      messagePop.classList.remove('show');
+      setTimeout(() => letter.classList.add('drop'), 450);
+    });
+
+    function makeSparkles(container, count) {
+      [...container.querySelectorAll('.sparkle')].forEach(s => s.remove());
+      for (let i = 0; i < count; i++) {
+        const sparkle = document.createElement('span');
+        sparkle.className = 'sparkle';
+        sparkle.style.left = Math.random() * 96 + '%';
+        sparkle.style.top = Math.random() * 92 + '%';
+        sparkle.style.animationDelay = Math.random() * 1.7 + 's';
+        container.appendChild(sparkle);
+      }
+    }
+  </script>
 </body>
 </html>
